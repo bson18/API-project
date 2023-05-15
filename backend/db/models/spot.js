@@ -49,6 +49,9 @@ module.exports = (sequelize, DataTypes) => {
     lng: {
       type: DataTypes.DECIMAL,
       allowNull: false
+    },
+    ownerId: {
+      type: DataTypes.INTEGER,
     }
   }, {
     sequelize,
