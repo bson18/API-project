@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot, SpotImage } = require('../../db/models');
+const { Spot, SpotImage, Sequelize } = require('../../db/models');
 
 const router = express.Router();
 
@@ -58,6 +58,41 @@ router.get('/', async (req, res) => {
     return res.status(200).json({Spots: spotsAssociations});
 });
 
+router.get('/current', async (req, res) => {
+    const ownerId = req.user.id;
+
+    const spots = await Spot.findAll({
+        where: {ownerId: ownerId}
+    });
+
+    const updatedSpots = [];
+
+    for (let i = 0; i < spots.length; i++) {
+        const spot = spots[i];
+
+        const spotImages = await spot.getSpotImages({
+            attributes: ['url'],
+            limit: 1
+        })
+
+        spot.dataValues.previewImage = spotImages[0].url;
+
+        const reviews = await spot.getReviews();
+
+        let starTotal = 0;
+        reviews.forEach(review => {
+            starTotal += review.dataValues.stars;
+        })
+        const avg = starTotal/reviews.length
+
+        spot.dataValues.avgRating = avg;
+
+        updatedSpots.push(spot.toJSON())
+    }
+
+    res.status(200).json({Spots: updatedSpots})
+})
+
 const validateSpotCreation = [
     check('address')
         .exists({ checkFalsy: true })
@@ -73,11 +108,11 @@ const validateSpotCreation = [
         .withMessage('Country is required'),
     check('lat')
         .exists({ checkFalsy: true })
-        .isDecimal()
+        .isLatLong()
         .withMessage('Latitude is not valid'),
     check('lng')
         .exists({ checkFalsy: true })
-        .isDecimal()
+        .isLatLong()
         .withMessage('Longitude is not valid'),
     check('name')
         .exists({ checkFalsy: true })
@@ -98,7 +133,7 @@ router.post('/', validateSpotCreation, async (req, res) => {
 
     const ownerId = req.user.id;
 
-    const newSpot = await Spot.create({ownerId, address, city, state, country, lat, lng, name, description, price });
+    const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
 
     return res.status(201).json(newSpot);
 })
