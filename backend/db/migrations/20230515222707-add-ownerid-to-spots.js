@@ -1,6 +1,10 @@
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA; //define schema in options object
+}
 module.exports = {
   async up (queryInterface, Sequelize) {
     /**
@@ -17,7 +21,7 @@ module.exports = {
         key: 'id',
       },
       onDelete: 'CASCADE'
-    })
+    }, options)
   },
 
   async down (queryInterface, Sequelize) {
@@ -27,6 +31,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeColumn('Spots', 'ownerId');
+    options.tableName = 'Spots'
+    await queryInterface.removeColumn(options, 'ownerId');
   }
 };
