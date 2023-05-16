@@ -28,8 +28,8 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    options.tableName = 'Users'
-    await queryInterface.removeColumn(options, 'FirstName');
-    await queryInterface.removeColumn(options, 'lastName');
+    // options.tableName = 'Users'
+    // await queryInterface.removeColumn(options, 'FirstName');
+    // await queryInterface.removeColumn(options, 'lastName');
   }
 };
