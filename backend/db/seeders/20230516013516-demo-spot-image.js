@@ -18,7 +18,7 @@ module.exports = {
       {
         spotId: 2,
         url: 'www.statueofliberty.com/image',
-        preview: false
+        preview: true
       },
       {
         spotId: 3,
