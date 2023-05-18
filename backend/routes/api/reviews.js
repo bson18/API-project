@@ -22,7 +22,6 @@ router.get('/current', requireAuth, async (req, res) => {
         const user = await review.getUser({
             attributes: ['id', 'firstName', 'lastName']
         })
-        console.log(user)
 
         const spot = await review.getSpot({
             attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']

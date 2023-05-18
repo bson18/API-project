@@ -149,6 +149,41 @@ router.get('/:spotId', async (req, res) => {
     return res.status(200).json(spot)
 })
 
+router.get('/:spotId/reviews', async (req, res) => {
+    const spotId = req.params.spotId;
+
+    const spot = await Spot.findByPk(spotId)
+    if (!spot) {
+        return res.status(404).json({ message: 'Spot couldn\'t be found' })
+    }
+
+    const updatedReviews = [];
+
+    const reviews = await Review.findAll({
+        where: {spotId: spotId}
+    })
+
+    for (let i = 0; i < reviews.length; i++) {
+        const review = reviews[i]
+
+        const user = await review.getUser({
+            attributes: ['id', 'firstName', 'lastName']
+        })
+
+        const reviewImages = await review.getReviewImages({
+            attributes: ['id', 'url']
+        })
+
+        updatedReviews.push({
+            ...review.toJSON(),
+            User: user,
+            ReviewImages: reviewImages
+        })
+    }
+
+    return res.status(200).json({ Reviews: updatedReviews })
+})
+
 const validateSpotCreation = [
     check('address')
         .exists({ checkFalsy: true })
