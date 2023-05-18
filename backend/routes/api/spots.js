@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const { check } = require('express-validator');
+const { check, body, matchedData } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot, SpotImage, Sequelize, Review, Booking, User } = require('../../db/models');
@@ -350,6 +350,61 @@ router.post('/:spotId/reviews', requireAuth, reviewValidation, async (req, res) 
     })
 
     return res.status(201).json(review)
+})
+
+//Create a Booking from a Spot based on the Spot's id
+router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+    const spotId = req.params.spotId
+    const { startDate, endDate } = req.body
+    const userId = req.user.id
+
+
+    let currentStartDate = new Date(startDate)
+    let currentEndDate = new Date(endDate)
+
+    const spot = await Spot.findByPk(spotId)
+
+    if (!spot) {
+        return res.status(404).json({ message: 'Spot couldn\'t be found' })
+    }
+
+    if (userId === spot.ownerId) {
+        return res.status(403).json({ message: 'You can\'t book your own spot' })
+    }
+
+    if (currentStartDate > currentEndDate) {
+        return res.status(400).json({
+            message: 'Bad Request',
+            errors: {
+                endDate: 'endDate cannot be on or before startDate'
+            }
+        })
+    }
+
+    const bookings = await spot.getBookings()
+
+    for (let i = 0; i < bookings.length; i++) {
+        const booking = bookings[i]
+
+        if (booking.startDate <= endDate && booking.endDate >= startDate) {
+            return res.status(403).json({
+                message: "Sorry, this spot is already booked for the specified dates",
+                errors: {
+                    startDate: "Start date conflicts with an existing booking",
+                    endDate: "End date conflicts with an existing booking"
+                }
+            })
+        }
+    }
+
+    const booking = await Booking.create({
+        spotId,
+        userId,
+        startDate,
+        endDate
+    })
+
+    return res.status(200).json(booking)
 })
 
 //Edit a Spot
