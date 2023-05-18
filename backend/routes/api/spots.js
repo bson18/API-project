@@ -252,6 +252,46 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     return res.status(200).json(imageData)
 })
 
+const reviewValidation = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({ min: 1, max: 5 })
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+];
+
+router.post('/:spotId/reviews', requireAuth, reviewValidation, async (req, res) => {
+    const spotId = req.params.spotId
+    const userId = req.user.id
+
+    const spot = await Spot.findByPk(spotId)
+    if (!spot) {
+        return res.status(404).json({ message: 'Spot couldn\'t be found' })
+    }
+
+    const existingReview = await Review.findOne({
+        where: {
+            spotId,
+            userId
+        }
+    })
+    if (existingReview) {
+        return res.status(500).json({ message: 'User already has a review for this spot' })
+    }
+
+    const review = await Review.create({
+        userId,
+        spotId,
+        review: req.body.review,
+        stars: req.body.stars
+    })
+
+    return res.status(201).json(review)
+})
+
 router.put('/:spotId', requireAuth, validateSpotCreation, async (req, res) => {
     const spotId = req.params.spotId
     const ownerId = req.user.id
