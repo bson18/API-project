@@ -98,4 +98,33 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     return res.status(200).json(updatedBooking)
 })
 
+//Delete a Booking
+router.delete('/:bookingId', requireAuth, async (req, res) => {
+    const userId = req.user.id
+    const bookingId = req.params.bookingId
+
+    const booking = await Booking.findByPk(bookingId)
+
+    if (!booking) {
+        return res.status(404).json({ message: 'Booking couldn\'t be found' })
+    }
+
+    const spot = await booking.getSpot()
+
+    if (userId !== booking.userId && spot.ownerId !== userId) {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
+
+    const bookingStartingDate = new Date(booking.startDate)
+    const currentDate = new Date()
+
+    if (bookingStartingDate <= currentDate) {
+        return res.status(403).json({ message: 'Bookings that have been started can\'t be deleted' })
+    }
+
+    await booking.destroy()
+
+    return res.status(200).json({ message: 'Successfully deleted' })
+})
+
 module.exports = router;
