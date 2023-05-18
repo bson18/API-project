@@ -7,6 +7,7 @@ const { Spot, SpotImage, Sequelize, Review } = require('../../db/models');
 
 const router = express.Router();
 
+//Get all Spots
 router.get('/', async (req, res) => {
     const spots = await Spot.findAll();
 
@@ -58,6 +59,7 @@ router.get('/', async (req, res) => {
     return res.status(200).json({ Spots: spotsAssociations });
 });
 
+//Get all Spots owned by the Current User
 router.get('/current', requireAuth, async (req, res) => {
     const ownerId = req.user.id;
 
@@ -97,6 +99,7 @@ router.get('/current', requireAuth, async (req, res) => {
     res.status(200).json({ Spots: updatedSpots })
 })
 
+//Get details of a Spot from an id
 router.get('/:spotId', async (req, res) => {
     const spotId = req.params.spotId;
 
@@ -149,6 +152,7 @@ router.get('/:spotId', async (req, res) => {
     return res.status(200).json(spot)
 })
 
+//Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async (req, res) => {
     const spotId = req.params.spotId;
 
@@ -219,6 +223,7 @@ const validateSpotCreation = [
     handleValidationErrors
 ];
 
+//Create a Spot
 router.post('/', requireAuth, validateSpotCreation, async (req, res) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
@@ -229,6 +234,7 @@ router.post('/', requireAuth, validateSpotCreation, async (req, res) => {
     return res.status(201).json(newSpot);
 })
 
+//Add an Image to a Spot based on the Spot's id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
     const spotId = req.params.spotId
     const { url, preview } = req.body;
@@ -263,6 +269,7 @@ const reviewValidation = [
     handleValidationErrors
 ];
 
+//Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, reviewValidation, async (req, res) => {
     const spotId = req.params.spotId
     const userId = req.user.id
@@ -292,6 +299,7 @@ router.post('/:spotId/reviews', requireAuth, reviewValidation, async (req, res) 
     return res.status(201).json(review)
 })
 
+//Edit a Spot
 router.put('/:spotId', requireAuth, validateSpotCreation, async (req, res) => {
     const spotId = req.params.spotId
     const ownerId = req.user.id
