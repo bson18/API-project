@@ -7,6 +7,7 @@ const { Spot, SpotImage, Sequelize, Review, ReviewImage } = require('../../db/mo
 
 const router = express.Router();
 
+//Get all Reviews of the Current User
 router.get('/current', requireAuth, async (req, res) => {
     const userId = req.user.id;
 
@@ -56,6 +57,7 @@ router.get('/current', requireAuth, async (req, res) => {
     return res.status(200).json({ Reviews: updatedReviews })
 })
 
+//Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', requireAuth, async (req, res) => {
     const reviewId = req.params.reviewId
     const userId = req.user.id
@@ -79,6 +81,32 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
     const { createdAt, updatedAt, reviewId: excludedReviewId, ...imageData } = newImage.toJSON()
 
     return res.status(200).json(imageData)
+})
+
+const reviewValidation = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({ min: 1, max: 5 })
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+];
+
+//Edit a Review
+router.put('/:reviewId', requireAuth, reviewValidation, async (req, res) => {
+    const reviewId = req.params.reviewId
+    const userId = req.user.id
+
+    const review = await Review.findByPk(reviewId)
+    if (!review || userId !== review.userId) {
+        return res.status(404).json({ message: 'Review couldn\'t be found' })
+    }
+
+    const updatedReview = await review.update(req.body)
+
+    return res.status(200).json(updatedReview)
 })
 
 module.exports = router;
