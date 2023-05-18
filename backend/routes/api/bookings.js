@@ -52,4 +52,50 @@ router.get('/current', requireAuth, async (req, res) => {
     return res.status(200).json({ Bookings: updatedBookings })
 })
 
+//Edit a Booking
+router.put('/:bookingId', requireAuth, async (req, res) => {
+    const bookingId = req.params.bookingId
+    const { startDate, endDate } = req.body
+    const userId = req.user.id
+
+    const booking = await Booking.findByPk(bookingId)
+
+    if (!booking) {
+        return res.status(404).json({ message: 'Booking couldn\'t be found' })
+    }
+
+    if (userId !== booking.userId) {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
+
+    const currentDate = new Date()
+    const bookingEndDate = new Date(booking.endDate)
+
+    if (bookingEndDate < currentDate) {
+        return res.status(403).json({ message: 'Past bookings can\'t be modified' })
+    }
+
+    const spot = await Spot.findByPk(booking.spotId)
+
+    const bookings = await spot.getBookings()
+
+    for (let i = 0; i < bookings.length; i++) {
+        const otherBooking = bookings[i]
+
+        if (otherBooking.id !== bookingId && otherBooking.startDate <= endDate && otherBooking.endDate >= startDate) {
+            return res.status(403).json({
+                message: 'Sorry, this spot is already booked for the specified dates',
+                errors: {
+                    startDate: 'Start date conflicts with an existing booking',
+                    endDate: 'End date conflicts with an existing booking'
+                }
+            })
+        }
+    }
+
+    const updatedBooking = await booking.update({ startDate, endDate })
+
+    return res.status(200).json(updatedBooking)
+})
+
 module.exports = router;
