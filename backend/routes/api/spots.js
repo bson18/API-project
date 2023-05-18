@@ -164,10 +164,10 @@ const validateSpotCreation = [
         .withMessage('Country is required'),
     check('lat')
         .exists({ checkFalsy: true })
+        .isLatLong()
         .withMessage('Latitude is not valid'),
     check('lng')
         .exists({ checkFalsy: true })
-        .isLatLong()
         .withMessage('Longitude is not valid'),
     check('name')
         .exists({ checkFalsy: true })
