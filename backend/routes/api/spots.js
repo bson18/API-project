@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const { Op } = require('sequelize')
 const { check, body, matchedData } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
@@ -7,9 +8,39 @@ const { Spot, SpotImage, Sequelize, Review, Booking, User } = require('../../db/
 
 const router = express.Router();
 
+const validateQueryParams = [
+    check('page').optional().isInt({ min: 1, max: 10 }).toInt().withMessage('Page must be greater than or equal to 1'),
+    check('size').optional().isInt({ min: 1, max: 20 }).toInt().withMessage('Size must be greater than or equal to 1'),
+    check('maxLat').optional().isDecimal().withMessage('Maximum latitude is invalid'),
+    check('minLat').optional().isDecimal().withMessage('Minimum latitude is invalid'),
+    check('minLng').optional().isDecimal().withMessage('Minimum longitude is invalid'),
+    check('maxLng').optional().isDecimal().withMessage('Maximum longitude is invalid'),
+    check('minPrice').optional().isDecimal({ min: 0 }).withMessage('Minimum price must be greater than or equal to 0'),
+    check('maxPrice').optional().isDecimal({ min: 0 }).withMessage('Maximum price must be greater than or equal to 0'),
+    handleValidationErrors
+]
+
 //Get all Spots
-router.get('/', async (req, res) => {
-    const spots = await Spot.findAll();
+router.get('/', validateQueryParams, async (req, res) => {
+    let { page = 1, size = 20, maxLat, minLat, minLng, maxLng, minPrice, maxPrice } = req.query
+
+    const queryFilters = {
+        ...(maxLat && { lat: {[Op.lte]: {maxLat}}}),
+        ...(minLat && { lat: {[Op.gte]: {minLat}}}),
+        ...(minLng && { lng: {[Op.gte]: {minLng}}}),
+        ...(maxLng && { lng: {[Op.lte]: {maxLng}}}),
+        ...(minPrice && {price: {[Op.gte]: {minPrice}}}),
+        ...(maxPrice && {price: {[Op.lte]: {maxPrice}}})
+    }
+
+    const limit = size
+    const offset = (page - 1) * limit
+
+    const spots = await Spot.findAll({
+        where: queryFilters,
+        limit,
+        offset
+    });
 
     const spotsAssociations = await Promise.all(
         spots.map(async spot => {
@@ -56,7 +87,7 @@ router.get('/', async (req, res) => {
         })
     )
 
-    return res.status(200).json({ Spots: spotsAssociations });
+    return res.status(200).json({ Spots: spotsAssociations, page: parseInt(page), size: parseInt(size) });
 });
 
 //Get all Spots owned by the Current User
