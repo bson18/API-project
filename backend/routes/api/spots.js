@@ -160,7 +160,7 @@ router.get('/:spotId/reviews', async (req, res) => {
     const updatedReviews = [];
 
     const reviews = await Review.findAll({
-        where: {spotId: spotId}
+        where: { spotId: spotId }
     })
 
     for (let i = 0; i < reviews.length; i++) {
@@ -250,6 +250,34 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     const { createdAt, updatedAt, spotId: excludedSpotId, ...imageData } = newImage.toJSON()
 
     return res.status(200).json(imageData)
+})
+
+router.put('/:spotId', requireAuth, validateSpotCreation, async (req, res) => {
+    const spotId = req.params.spotId
+    const ownerId = req.user.id
+
+    const spot = await Spot.findByPk(spotId)
+    if (!spot || ownerId !== spot.ownerId) {
+        return res.status(404).json({ message: 'Spot couldn\'t be found' })
+    }
+
+    const updatedSpot = await spot.update(req.body);
+
+    return res.status(200).json(updatedSpot)
+})
+
+router.delete('/:spotId', requireAuth, async (req, res) => {
+    const spotId = req.params.spotId
+    const ownerId = req.user.id
+
+    const spot = await Spot.findByPk(spotId)
+    if (!spot || ownerId !== spot.ownerId) {
+        return res.status(404).json({ message: 'Spot couldn\'t be found' })
+    }
+
+    await spot.destroy();
+
+    return res.status(200).json({ message: 'Successfully deleted' })
 })
 
 module.exports = router;
