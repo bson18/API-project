@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot, SpotImage, Sequelize, Review } = require('../../db/models');
+const { Spot, SpotImage, Sequelize, Review, ReviewImage } = require('../../db/models');
 
 const router = express.Router();
 
@@ -56,6 +56,29 @@ router.get('/current', requireAuth, async (req, res) => {
     return res.status(200).json({ Reviews: updatedReviews })
 })
 
+router.post('/:reviewId/images', requireAuth, async (req, res) => {
+    const reviewId = req.params.reviewId
+    const userId = req.user.id
 
+    const review = await Review.findByPk(reviewId)
+
+    if (!review || userId !== review.userId) {
+        return res.status(404).json({ message: 'Review couldn\'t be found' })
+    }
+
+    const imageCount = await ReviewImage.count({ where: { reviewId } })
+    if (imageCount >= 10) {
+        return res.status(403).json({ message: 'Maximum number of images for this resource was reached' })
+    }
+
+    const newImage = await ReviewImage.create({
+        reviewId,
+        url: req.body.url
+    })
+
+    const { createdAt, updatedAt, reviewId: excludedReviewId, ...imageData } = newImage.toJSON()
+
+    return res.status(200).json(imageData)
+})
 
 module.exports = router;
