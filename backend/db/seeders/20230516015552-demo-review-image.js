@@ -15,11 +15,11 @@ module.exports = {
         url: 'www.instagram.com/reviewimageaa'
       },
       {
-        reviewId: 2,
+        reviewId: 3,
         url: 'www.instagram.com/reviewimagestatueofliberty'
       },
       {
-        reviewId: 3,
+        reviewId: 2,
         url: 'www.instagram.com/reviewimagerams'
       },
     ], {})
