@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot, SpotImage, Sequelize, Review } = require('../../db/models');
+const { Spot, SpotImage, Sequelize, Review, Booking, User } = require('../../db/models');
 
 const router = express.Router();
 
@@ -186,6 +186,59 @@ router.get('/:spotId/reviews', async (req, res) => {
     }
 
     return res.status(200).json({ Reviews: updatedReviews })
+})
+
+//Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+    const spotId = req.params.spotId
+    const currentId = req.user.id
+
+    const spot = await Spot.findByPk(spotId)
+
+    if(!spot) {
+        return res.status(404).json({ message: 'Spot couldn\'t be found' })
+    }
+
+    const bookings = await Booking.findAll({
+        where: { spotId: spotId }
+    })
+
+    const updatedBookings = []
+
+    for (let i = 0; i < bookings.length; i++) {
+        const booking = bookings[i]
+
+        let updatedBooking = {
+            id: booking.id,
+            spotId: booking.spotId,
+            startDate: booking.startDate,
+            endDate: booking.endDate,
+            createdAt: booking.createdAt,
+            updatedAt: booking.updatedAt
+        }
+
+        if (currentId && spot.ownerId === currentId) {
+            const user = await User.findByPk(booking.userId)
+            updatedBooking.User = {
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName
+            }
+            updatedBooking.userId = booking.userId
+        }
+
+        if (spot.ownerId !== currentId) {
+            updatedBooking = {
+                spotId: booking.spotId,
+                startDate: booking.startDate,
+                endDate: booking.endDate
+            }
+        }
+
+        updatedBookings.push(updatedBooking)
+    }
+
+    return res.status(200).json({ Bookings: updatedBookings })
 })
 
 const validateSpotCreation = [
