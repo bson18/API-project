@@ -46,7 +46,6 @@ router.get('/current', requireAuth, async (req, res) => {
             createdAt: booking.createdAt,
             updatedAt: booking.updatedAt
         })
-        console.log(updatedBookings)
     }
 
     return res.status(200).json({ Bookings: updatedBookings })
