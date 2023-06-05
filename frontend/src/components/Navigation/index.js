@@ -9,6 +9,7 @@ function Navigation({ isLoaded }) {
 
     return (
         <ul>
+            <li>AirBnB</li>
             <li>
                 <NavLink exact to="/">Home</NavLink>
             </li>
