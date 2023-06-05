@@ -1,4 +1,10 @@
-li {
+ul {
     display:flex;
-    justify-content: right;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.hidden {
+    display: none;
 }
