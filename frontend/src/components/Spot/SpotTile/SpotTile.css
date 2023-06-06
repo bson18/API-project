@@ -1,0 +1,13 @@
+img{
+    width: 250px;
+    height: 250px;
+ }
+
+ .location-rating{
+     display:flex;
+     justify-content: space-between;
+ }
+
+ .spot-tile{
+     cursor:pointer;
+ }
