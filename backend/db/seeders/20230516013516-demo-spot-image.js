@@ -12,12 +12,12 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         spotId: 1,
-        url: 'www.appacademy.io/image',
+        url: 'https://pbs.twimg.com/profile_images/378800000699275845/28983bbc0ac0a12cde1c0dc3fc818b4b_400x400.png',
         preview: true
       },
       {
         spotId: 2,
-        url: 'www.statueofliberty.com/image',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/d/dd/Lady_Liberty_under_a_blue_sky_%28cropped%29.jpg',
         preview: true
       },
       {
