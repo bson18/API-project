@@ -1,36 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import * as spotActions from "../../../store/spots";
+import { useDispatch, useSelector } from "react-redux";
 import SpotTile from "../SpotTile";
-import { csrfFetch } from "../../../store/csrf";
 import './SpotTiles.css'
 
 const SpotTiles = () => {
-    const [spots, setSpots] = useState([])
+    const dispatch = useDispatch()
+    const spots = useSelector(state => state.spots.allSpots)
 
     useEffect(() => {
-        const query = async () => {
-            const res = await csrfFetch("/api/spots")
-            const data = await res.json()
-
-            if (data && data.Spots) {
-                setSpots(data.Spots)
-            }
-        }
-        query()
-    }, [])
+        dispatch(spotActions.thunkFetchSpots())
+    }, [dispatch])
 
     return (
-        <div className="spot-tiles">
-            {spots.map(({ id, price, city, state, avgRating, previewImage }) => {
-                return (
-                    <SpotTile
-                        key={id}
-                        price={price}
-                        location={`${city}, ${state}`}
-                        avgRating={avgRating}
-                        previewImage={previewImage}
-                    />
-                );
-            })}
+        <div className='spot-tiles'>
+            {spots && spots.map(spot => (
+                <SpotTile key={spot.id} spot={spot} />
+            ))}
         </div>
     )
 }
