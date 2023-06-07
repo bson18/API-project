@@ -29,7 +29,7 @@ const SpotDetails = () => {
                 <h2>{spot.name}</h2>
                 <p>Location: {spot.city}, {spot.state}, {spot.country}</p>
                 <div className="images">
-                    {SpotImages && <img key={SpotImages[0].url} href={SpotImages[0].url} alt='PreviewImage' />}
+                    {SpotImages && <img key={SpotImages[0].url} src={SpotImages[0].url} alt='PreviewImage' />}
                     <div className="right-side-images">
                         {SpotImages[1] && <img key={SpotImages[1].url} src={SpotImages[1].url} alt={SpotImages[1].url} />}
                         {SpotImages[2] && <img key={SpotImages[2].url} src={SpotImages[2].url} alt={SpotImages[2].url} />}
