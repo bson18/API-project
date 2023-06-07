@@ -1,26 +1,28 @@
-import { useState } from "react"
-import { useDispatch } from "react-redux"
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
-import { thunkCreateSpot } from "../../../store/spots"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useHistory, useParams } from "react-router-dom"
+import { thunkFetchSingleSpot, thunkUpdateSpot } from "../../../store/spots"
 
-const CreateSpot = () => {
+const EditSpot = () => {
+    const { spotId } = useParams()
     const dispatch = useDispatch()
     const history = useHistory()
+    const spot = useSelector(state => state.spots)
 
-    const [country, setCountry] = useState('')
-    const [address, setAddress] = useState('')
-    const [city, setCity] = useState('')
-    const [state, setState] = useState('')
-    const [lat, setLat] = useState('')
-    const [lng, setLng] = useState('')
-    const [description, setDescription] = useState('')
-    const [name, setName] = useState('')
-    const [price, setPrice] = useState('')
-    const [previewImage, setPreviewImage] = useState('')
-    const [img1, setImg1] = useState('')
-    const [img2, setImg2] = useState('')
-    const [img3, setImg3] = useState('')
-    const [img4, setImg4] = useState('')
+    useEffect(() => {
+        dispatch(thunkFetchSingleSpot(spotId))
+    }, [dispatch, spotId])
+
+    const { singleSpot } = spot
+    const [country, setCountry] = useState(spot.country)
+    const [address, setAddress] = useState(spot.address)
+    const [city, setCity] = useState(spot.city)
+    const [state, setState] = useState(spot.state)
+    const [lat, setLat] = useState(spot.lat)
+    const [lng, setLng] = useState(spot.lng)
+    const [description, setDescription] = useState(spot.description)
+    const [name, setName] = useState(spot.name)
+    const [price, setPrice] = useState(spot.price)
     const [validationErrors, setValidationErrors] = useState({})
 
     const validation = () => {
@@ -38,12 +40,6 @@ const CreateSpot = () => {
         if (name.length === 0) errors.name = 'Name is required'
         if (price.length === 0) errors.price = 'Price is required'
         if (isNaN(price) || price <= 0) errors.price = 'Price must be a number greater than 0'
-        if (previewImage.length === 0) errors.previewImage = 'Preview image is required'
-        if (!previewImage.match(/\.(jpg|jpeg|png)$/)) errors.previewImage = 'Image URL must end in .png, .jpg, or .jpeg'
-        if (img1 && !img1.match(/\.(jpg|jpeg|png)$/)) errors.img1 = 'Image URL must end in .png, .jpg, or .jpeg'
-        if (img2 && !img2.match(/\.(jpg|jpeg|png)$/)) errors.img2 = 'Image URL must end in .png, .jpg, or .jpeg'
-        if (img3 && !img3.match(/\.(jpg|jpeg|png)$/)) errors.img3 = 'Image URL must end in .png, .jpg, or .jpeg'
-        if (img4 && !img4.match(/\.(jpg|jpeg|png)$/)) errors.img4 = 'Image URL must end in .png, .jpg, or .jpeg'
         setValidationErrors(errors)
         return Object.keys(errors).length === 0
     }
@@ -52,34 +48,23 @@ const CreateSpot = () => {
         e.preventDefault()
         if (!validation()) return
 
-        const createSpot = {
-            country, address, city, state, lat, lng, description, name, price
+        const spot = {
+            ...singleSpot, country, address, city, state, lat, lng, description, name, price
         }
 
-        let imgUrls = []
-
-        const previewImg = {
-            url: previewImage,
-            preview: true
-        }
-        imgUrls.push(previewImg)
-        if (img1) imgUrls.push({ url: img1, preview: false })
-        if (img2) imgUrls.push({ url: img2, preview: false })
-        if (img3) imgUrls.push({ url: img3, preview: false })
-        if (img4) imgUrls.push({ url: img4, preview: false })
-
-        let spot = await dispatch(thunkCreateSpot(createSpot, imgUrls))
-        if (spot) {
-
-            history.push(`/spots/${spot.id}`)
+        let updatedSpot = await dispatch(thunkUpdateSpot(spot))
+        if (updatedSpot) {
+            history.push(`/spots/${spotId}`)
         }
     }
+
+    if (!spot) return null
 
     return (
         <div className="form-container">
             <form onSubmit={onSubmit}>
                 <div>
-                    <h2>Create a New Spot</h2>
+                    <h2>Update your Spot</h2>
                     <h3>Where's your place located?</h3>
                     <p>Guests will only get your exact address once they booked a reservation</p>
                 </div>
@@ -179,59 +164,10 @@ const CreateSpot = () => {
                     />
                     <div className="error"> {validationErrors.price && `${validationErrors.price}`}</div>
                 </div>
-
-                <h3>Liven up your spot with photos</h3>
-                <p>Submit a link to at least one photo to publish your spot</p>
-                <div>
-                    <input
-                        value={previewImage}
-                        type='text'
-                        placeholder="Preview Image URL"
-                        onChange={e => setPreviewImage(e.target.value)}
-                    />
-                    <div className="error"> {validationErrors.previewImage && `${validationErrors.previewImage}`}</div>
-                </div>
-                <div>
-                    <input
-                        value={img1}
-                        type='text'
-                        placeholder="Image URL"
-                        onChange={e => setImg1(e.target.value)}
-                    />
-                    <div className="error"> {validationErrors.img1 && `${validationErrors.img1}`}</div>
-                </div>
-                <div>
-                    <input
-                        value={img2}
-                        type='text'
-                        placeholder="Image URL"
-                        onChange={e => setImg2(e.target.value)}
-                    />
-                    <div className="error"> {validationErrors.img2 && `${validationErrors.img2}`}</div>
-                </div>
-                <div>
-                    <input
-                        value={img3}
-                        type='text'
-                        placeholder="Image URL"
-                        onChange={e => setImg3(e.target.value)}
-                    />
-                    <div className="error"> {validationErrors.img3 && `${validationErrors.img3}`}</div>
-                </div>
-                <div>
-                    <input
-                        value={img4}
-                        type='text'
-                        placeholder="Image URL"
-                        onChange={e => setImg4(e.target.value)}
-                    />
-                    <div className="error"> {validationErrors.img4 && `${validationErrors.img4}`}</div>
-                </div>
-
-                <button type="submit">Create Spot</button>
+                <button type="submit">Update your Spot</button>
             </form>
         </div>
     )
 }
 
-export default CreateSpot;
+export default EditSpot

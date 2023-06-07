@@ -36,11 +36,11 @@ const ManageSpot = () => {
         <>
             <div>
                 <h2>Manage Your Spots</h2>
-                <button onClick={e => history.push('/spots/new')}>Create a New Spot</button>
+                <button onClick={() => history.push('/spots/new')}>Create a New Spot</button>
             </div>
             <div className="spot-tiles">
                 {userSpots.map(spot => (
-                    <div className="spot-tile" onClick={() => history.push(`/spots/${spot.id}`)}>
+                    <div className="spot-tile" key={spot.id} onClick={() => history.push(`/spots/${spot.id}`)}>
                         {(spot.previewImage === 'There is no preview image') ?
                             <div style={{ width: 250, height: 250, border: 'solid black 1px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}></div>
                             : <img src={spot.previewImage} alt="Spot Preview" />}
@@ -50,7 +50,10 @@ const ManageSpot = () => {
                         </div>
                         <p>${spot.price} night</p>
                         <div>
-                            <button>Update</button> {' '}
+                            <button onClick={e => {
+                                e.stopPropagation()
+                                history.push(`/spots/${spot.id}/edit`)
+                            }}>Update</button> {' '}
                             <button>Delete</button>
                         </div>
                     </div>
