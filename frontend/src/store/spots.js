@@ -3,7 +3,7 @@ import { csrfFetch } from "./csrf";
 const GET_ALL_SPOTS = 'spots/GET_ALL_SPOTS'
 const GET_SINGLE_SPOT = 'spots/GET_SINGLE_SPOT'
 const CREATE_SPOT = 'spots/CREATE_SPOT'
-// const ADD_SPOT_IMAGE = 'spots/ADD_SPOT_IMAGE'
+const UPDATE_SPOT = 'spots/UPDATE_SPOT'
 
 /*-----ACTIONS-----*/
 
@@ -31,13 +31,13 @@ export const actionCreateSpot = (spot) => {
     }
 }
 
-//add spot image
-// export const actionAddSpotImage = (spotImages) => {
-//     return {
-//         type: ADD_SPOT_IMAGE,
-//         spotImages
-//     }
-// }
+//update spot
+export const actionUpdateSpot = (spot) => {
+    return {
+        type: UPDATE_SPOT,
+        spot
+    }
+}
 
 /*-----THUNKS-----*/
 
@@ -97,6 +97,23 @@ export const thunkCreateSpot = (spot, images) => async dispatch => {
     }
 }
 
+//update spot
+export const thunkUpdateSpot = (spot) => async dispatch => {
+    const res = await csrfFetch(`/api/spots/${spot.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(spot)
+    })
+
+    if (res.ok) {
+        const data = await res.json()
+        dispatch(actionUpdateSpot(data))
+        return data
+    }
+}
+
 
 /*-----REDUCER-----*/
 
@@ -121,6 +138,10 @@ export default function spotsReducer(state = initialState, action) {
             const spot = action.spot
             newState = { ...state, allSpots: {}, singleSpot: { ...spot } }
             newState.singleSpot[spot.id] = spot
+            return newState
+        }
+        case UPDATE_SPOT: {
+            newState = { ...state, [action.spot.id]: action.spot }
             return newState
         }
 
