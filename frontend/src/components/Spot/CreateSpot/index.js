@@ -53,7 +53,7 @@ const CreateSpot = () => {
         if (!validation()) return
 
         const createSpot = {
-            country, address, city, state, lat, lng, description, name, price
+            country, address, city, state, lat: 1, lng: 1, description, name, price
         }
 
         let imgUrls = []

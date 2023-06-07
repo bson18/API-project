@@ -16,7 +16,7 @@ const SpotTile = ({ spot }) => {
 
     return (
         <>
-            <div className="spot-tile" onClick={onClick}>
+            <div className="spot-tile" onClick={onClick} title={spot.name}>
                 {img}
                 <div className="location-rating">
                     <p>{spot.city}, {spot.state}</p>
