@@ -11,7 +11,7 @@ const SpotTile = ({ spot }) => {
 
     const img = (spot.previewImage === 'There is no preview image') ?
         <div style={{ width: 250, height: 250, border: 'solid black 1px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}></div>
-        : <img href={spot.previewImage} alt="Spot Preview" />
+        : <img src={spot.previewImage} alt="Spot Preview" />
 
 
     return (

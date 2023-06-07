@@ -1,8 +1,14 @@
-ul {
+.nav-bar {
     display:flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     list-style: none;
+}
+
+.profile-menu{
+    display: flex;
+    justify-content:right;
 }
 
 .hidden {
