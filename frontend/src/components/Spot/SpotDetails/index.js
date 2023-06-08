@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom"
 import { thunkFetchSingleSpot } from "../../../store/spots";
 import './SpotDetails.css'
+import SpotReviews from "../../Review/SpotReviews";
 
 const SpotDetails = () => {
     const { spotId } = useParams();
@@ -15,6 +16,16 @@ const SpotDetails = () => {
 
     const reserveSpot = () => {
         alert('Feature coming soon')
+    }
+
+    const reviewsDisplay = () => {
+        if (spot.numReviews === 0) {
+            return <p><i className="fa-sharp fa-solid fa-star"></i>New</p>
+        } else if (spot.numReviews === 1) {
+            return <p><i className="fa-sharp fa-solid fa-star"></i>{spot.avgStarRating} &bull; {spot.numReviews + ' review'}</p>
+        } else {
+            return <p><i className="fa-sharp fa-solid fa-star"></i>{spot.avgStarRating} &bull; {spot.numReviews + ' reviews'}</p>
+        }
     }
 
     if (!spot) return null;
@@ -45,9 +56,17 @@ const SpotDetails = () => {
             <div>
                 <div>
                     <p>${spot.price} night</p>
-                    <p><i className="fa-sharp fa-solid fa-star"></i>{spot.avgStarRating} - {spot.numReviews} reviews</p>
+                    {reviewsDisplay()}
                 </div>
                 <button onClick={reserveSpot}>Reserve</button>
+            </div>
+            <hr />
+            <div>
+                {reviewsDisplay()}
+                <button>Post Your Review</button>
+            </div>
+            <div>
+                <SpotReviews spot={spot} />
             </div>
         </>
     )

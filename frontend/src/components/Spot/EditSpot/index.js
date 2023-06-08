@@ -9,21 +9,36 @@ const EditSpot = () => {
     const history = useHistory()
     const spot = useSelector(state => state.spots)
 
+    const { singleSpot } = spot
+    const [country, setCountry] = useState('')
+    const [address, setAddress] = useState('')
+    const [city, setCity] = useState('')
+    const [state, setState] = useState('')
+    const [lat, setLat] = useState('')
+    const [lng, setLng] = useState('')
+    const [description, setDescription] = useState('')
+    const [name, setName] = useState('')
+    const [price, setPrice] = useState('')
+    const [validationErrors, setValidationErrors] = useState({})
+
     useEffect(() => {
         dispatch(thunkFetchSingleSpot(spotId))
     }, [dispatch, spotId])
 
-    const { singleSpot } = spot
-    const [country, setCountry] = useState(spot.country)
-    const [address, setAddress] = useState(spot.address)
-    const [city, setCity] = useState(spot.city)
-    const [state, setState] = useState(spot.state)
-    const [lat, setLat] = useState(spot.lat)
-    const [lng, setLng] = useState(spot.lng)
-    const [description, setDescription] = useState(spot.description)
-    const [name, setName] = useState(spot.name)
-    const [price, setPrice] = useState(spot.price)
-    const [validationErrors, setValidationErrors] = useState({})
+    useEffect(() => {
+        if (spot.singleSpot) {
+            const { singleSpot } = spot
+            setCountry(singleSpot.country || '')
+            setAddress(singleSpot.address || '')
+            setCity(singleSpot.city || '')
+            setState(singleSpot.state || '')
+            setLat(singleSpot.lat || '')
+            setLng(singleSpot.lng || '')
+            setDescription(singleSpot.description || '')
+            setName(singleSpot.name || '')
+            setPrice(singleSpot.price || '')
+        }
+    }, [spot.singleSpot, spot])
 
     const validation = () => {
         const errors = {}
