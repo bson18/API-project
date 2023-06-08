@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { thunkFetchSpots } from "../../../store/spots"
 import { useHistory } from "react-router-dom"
 import './ManageSpot.css'
+import OpenModalMenuItem from "../../Navigation/OpenModalMenuItem"
+import DeleteSpotModal from "../DeleteSpotModal"
 
 const ManageSpot = () => {
     const dispatch = useDispatch()
@@ -54,7 +56,12 @@ const ManageSpot = () => {
                                 e.stopPropagation()
                                 history.push(`/spots/${spot.id}/edit`)
                             }}>Update</button> {' '}
-                            <button>Delete</button>
+                            <button onClick={e => e.stopPropagation()}>
+                                <OpenModalMenuItem
+                                    modalComponent={<DeleteSpotModal spotId={spot.id} />}
+                                    itemText='Delete'
+                                />
+                            </button>
                         </div>
                     </div>
                 ))}
