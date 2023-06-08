@@ -1,16 +1,16 @@
 import { useDispatch } from "react-redux"
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+// import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 import { useModal } from "../../../context/Modal"
 import { thunkDeleteSpot } from "../../../store/spots"
 
 const DeleteSpotModal = ({ spotId }) => {
     const dispatch = useDispatch()
-    const history = useHistory()
+    // const history = useHistory()
     const { closeModal } = useModal()
 
     const onClick = e => {
         e.preventDefault()
-        return dispatch(thunkDeleteSpot(spotId))
+        dispatch(thunkDeleteSpot(spotId))
             .then(closeModal)
     }
 

@@ -164,8 +164,8 @@ export default function spotsReducer(state = initialState, action) {
             return newState
         }
         case DELETE_SPOT: {
-            newState = { ...state }
-            delete newState[action.spotId]
+            const spotId = action.spotId
+            newState = { ...state, allSpots: state.allSpots.filter(spot => spot.id !== spotId) }
             return newState
         }
 
