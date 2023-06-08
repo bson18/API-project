@@ -10,10 +10,11 @@ const SpotReviews = ({ spot }) => {
     useEffect(() => {
         dispatch(thunkGetSpotReviews(spot.id))
     }, [dispatch, spot.id])
+
+    if (!reviews || !reviews.reviews || !reviews.reviews.Reviews) return null
     // console.log('1', reviews)
     // console.log('2', reviews.reviews)
     // console.log('3', reviews.reviews.Reviews[0].User.firstName)
-    const { reviews: { Reviews } } = reviews
     // console.log('4', Reviews)
     // console.log('5', Reviews[0].User.firstName)
 
@@ -32,11 +33,11 @@ const SpotReviews = ({ spot }) => {
         '12': 'December',
     }
 
-    if (!reviews) return null
 
     if (spot.numReviews === 0 && user && user.id !== spot.OwnerId) {
         return <p>Be the first to post a review!</p>
     }
+    const { reviews: { Reviews } } = reviews
 
     return (
         <>
