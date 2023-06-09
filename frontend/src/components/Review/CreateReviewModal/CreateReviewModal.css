@@ -1,0 +1,19 @@
+.filled {
+    color: black
+}
+
+.empty {
+    color: #ccc;
+}
+
+.stars-container {
+    display: flex
+}
+
+#submit-button-disabled {
+    background-color: #ccc,
+}
+
+#submit-button-active {
+    background-color: red
+}

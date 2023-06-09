@@ -1,6 +1,8 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkGetSpotReviews } from "../../../store/reviews"
+import OpenModalMenuItem from "../../Navigation/OpenModalMenuItem"
+import CreateReviewModal from "../CreateReviewModal"
 
 const SpotReviews = ({ spot }) => {
     const dispatch = useDispatch()
@@ -15,7 +17,6 @@ const SpotReviews = ({ spot }) => {
     // console.log('1', reviews)
     // console.log('2', reviews.reviews)
     // console.log('3', reviews.reviews.Reviews[0].User.firstName)
-    // console.log('4', Reviews)
     // console.log('5', Reviews[0].User.firstName)
 
     const months = {
@@ -38,9 +39,31 @@ const SpotReviews = ({ spot }) => {
         return <p>Be the first to post a review!</p>
     }
     const { reviews: { Reviews } } = reviews
+    // console.log('4', Reviews)
+
+    // const userCheck = () => {
+    //     if (user && user.id !== spot.ownerId && (!Reviews.find(review => user.id === review.userId))) {
+    //         <button>
+    //             <OpenModalMenuItem
+    //                 modalComponent={<CreateReviewModal spot={spot} user={user} />}
+    //                 itemText='Post Your Review'
+    //             />
+    //         </button>
+    //     }
+    // }
 
     return (
         <>
+            <div>
+                {(user && user.id !== spot.ownerId && (!Reviews.find(review => user.id === review.userId))
+                    && <button>
+                        <OpenModalMenuItem
+                            modalComponent={<CreateReviewModal spot={spot} user={user} />}
+                            itemText='Post Your Review'
+                        />
+                    </button>)
+                }
+            </div>
             {Reviews.reverse().map(review => (
                 <div key={review.id}>
                     <h3>{review.User.firstName}</h3>
@@ -52,4 +75,4 @@ const SpotReviews = ({ spot }) => {
     )
 }
 
-export default SpotReviews
+export default SpotReviews;

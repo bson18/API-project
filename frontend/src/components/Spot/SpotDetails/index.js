@@ -63,7 +63,6 @@ const SpotDetails = () => {
             <hr />
             <div>
                 {reviewsDisplay()}
-                <button>Post Your Review</button>
             </div>
             <div>
                 <SpotReviews spot={spot} />
