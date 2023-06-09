@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useModal } from "../../../context/Modal"
-import { thunkCreateReview } from "../../../store/reviews"
+import { thunkCreateReview, thunkGetSpotReviews } from "../../../store/reviews"
 import StarRating from "./StarRating"
 import './CreateReviewModal.css'
 
@@ -34,6 +34,7 @@ const CreateReviewModal = ({ spot, user }) => {
             setValidationErrors(createdReview)
             return
         } else {
+            dispatch(thunkGetSpotReviews(spot.id))
             closeModal()
         }
     }

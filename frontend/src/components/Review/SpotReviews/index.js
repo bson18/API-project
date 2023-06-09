@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { thunkGetSpotReviews } from "../../../store/reviews"
 import OpenModalMenuItem from "../../Navigation/OpenModalMenuItem"
 import CreateReviewModal from "../CreateReviewModal"
+import DeleteReviewModal from "../DeleteReviewModal"
 
 const SpotReviews = ({ spot }) => {
     const dispatch = useDispatch()
@@ -69,6 +70,13 @@ const SpotReviews = ({ spot }) => {
                     <h3>{review.User.firstName}</h3>
                     <h4>{months[review.createdAt.split('-')[1]]} {review.createdAt.split('-')[0]}</h4>
                     <p>{review.review}</p>
+                    {(user && user.id === review.userId
+                        && <button>
+                            <OpenModalMenuItem
+                                modalComponent={<DeleteReviewModal spot={spot} review={review} />}
+                                itemText='Delete'
+                            />
+                        </button>)}
                 </div>
             ))}
         </>

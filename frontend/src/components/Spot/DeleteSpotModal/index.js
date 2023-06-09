@@ -20,7 +20,7 @@ const DeleteSpotModal = ({ spotId }) => {
             <p>Are you sure you want to remove this spot?</p>
             <div>
                 <button onClick={onClick}>Yes (Delete Spot)</button>
-                <button onClick={closeModal}>No (KeepSpot)</button>
+                <button onClick={closeModal}>No (Keep Spot)</button>
             </div>
         </>
     )
