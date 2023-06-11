@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 import { thunkCreateSpot } from "../../../store/spots"
+import './CreateSpot.css'
 
 const CreateSpot = () => {
     const dispatch = useDispatch()
@@ -78,15 +79,16 @@ const CreateSpot = () => {
     return (
         <div className="form-container">
             <form onSubmit={onSubmit}>
-                <div>
+                <div className="head">
                     <h2>Create a New Spot</h2>
                     <h3>Where's your place located?</h3>
                     <p>Guests will only get your exact address once they booked a reservation</p>
                 </div>
-                <div>
+                <div className="country">
                     <span><label>Country</label></span><span className="error"> {validationErrors.country && `${validationErrors.country}`}</span>
                     <div>
                         <input
+                            className="full-size"
                             value={country}
                             type='text'
                             placeholder="Country"
@@ -94,10 +96,11 @@ const CreateSpot = () => {
                         />
                     </div>
                 </div>
-                <div>
+                <div className="address">
                     <span><label>Street Address</label></span><span className="error"> {validationErrors.address && `${validationErrors.address}`}</span>
                     <div>
                         <input
+                            className="full-size"
                             value={address}
                             type='text'
                             placeholder="Address"
@@ -105,49 +108,59 @@ const CreateSpot = () => {
                         />
                     </div>
                 </div>
-                <div>
-                    <span><label>City</label></span><span className="error"> {validationErrors.city && `${validationErrors.city}`}</span>
-                    <div>
-                        <input
-                            value={city}
-                            type='text'
-                            placeholder="City"
-                            onChange={e => setCity(e.target.value)}
-                        />
+                <div className="city-state">
+                    <div className="city">
+                        <span><label>City</label></span><span className="error"> {validationErrors.city && `${validationErrors.city}`}</span>
+                        <div>
+                            <input
+                                className="space-comma"
+                                value={city}
+                                type='text'
+                                placeholder="City"
+                                onChange={e => setCity(e.target.value)}
+                            /> {' , '}
+                        </div>
                     </div>
-                    {' , '}
-                    <span><label>State</label></span><span className="error"> {validationErrors.state && `${validationErrors.state}`}</span>
-                    <div>
+                    <div className="state">
+                        <span><label>State</label></span><span className="error"> {validationErrors.state && `${validationErrors.state}`}</span>
+                        <div>
+                            <input
+                                value={state}
+                                type='text'
+                                placeholder="State"
+                                onChange={e => setState(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="lat-lng">
+                    <div className="lat">
+                        <span><label>Latitude</label></span><span className="error"> {validationErrors.lat && `${validationErrors.lat}`}</span>
                         <input
-                            value={state}
+                            className="space-comma"
+                            value={lat}
                             type='text'
-                            placeholder="State"
-                            onChange={e => setState(e.target.value)}
+                            placeholder="Latitude"
+                            onChange={e => setLat(e.target.value)}
+                        />
+                        {' , '}
+                    </div>
+                    <div className="lng">
+                        <span><label>Longitude</label></span><span className="error"> {validationErrors.lng && `${validationErrors.lng}`}</span>
+                        <input
+                            value={lng}
+                            type='text'
+                            placeholder="Longitude"
+                            onChange={e => setLng(e.target.value)}
                         />
                     </div>
                 </div>
-                <div>
-                    <span><label>Latitude</label></span><span className="error"> {validationErrors.lat && `${validationErrors.lat}`}</span>
-                    <input
-                        value={lat}
-                        type='text'
-                        placeholder="Latitude"
-                        onChange={e => setLat(e.target.value)}
-                    />
-                    {' , '}
-                    <span><label>Longitude</label></span><span className="error"> {validationErrors.lng && `${validationErrors.lng}`}</span>
-                    <input
-                        value={lng}
-                        type='text'
-                        placeholder="Longitude"
-                        onChange={e => setLng(e.target.value)}
-                    />
-                </div>
-
-                <h3>Describe your place to guests</h3>
-                <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
-                <div>
+                <hr />
+                <div className="description">
+                    <h3>Describe your place to guests</h3>
+                    <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
                     <textarea
+                        className="full-size"
                         value={description}
                         type='text'
                         placeholder="Description"
@@ -155,11 +168,12 @@ const CreateSpot = () => {
                     />
                     <div className="error"> {validationErrors.description && `${validationErrors.description}`}</div>
                 </div>
-
-                <h3>Create a title for your spot</h3>
-                <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
-                <div>
+                <hr />
+                <div className="title">
+                    <h3>Create a title for your spot</h3>
+                    <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
                     <input
+                        className="full-size"
                         value={name}
                         type='text'
                         placeholder="Name of your spot"
@@ -167,11 +181,12 @@ const CreateSpot = () => {
                     />
                     <div className="error"> {validationErrors.name && `${validationErrors.name}`}</div>
                 </div>
-
-                <h3>Set a base price for your spot</h3>
-                <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
-                <div>
+                <hr />
+                <div className="price">
+                    <h3>Set a base price for your spot</h3>
+                    <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
                     {" $ "}<input
+                        className="price-size"
                         value={price}
                         type='text'
                         placeholder="Price per night (USD)"
@@ -179,11 +194,12 @@ const CreateSpot = () => {
                     />
                     <div className="error"> {validationErrors.price && `${validationErrors.price}`}</div>
                 </div>
-
-                <h3>Liven up your spot with photos</h3>
-                <p>Submit a link to at least one photo to publish your spot</p>
-                <div>
+                <hr />
+                <div className="create-images">
+                    <h3>Liven up your spot with photos</h3>
+                    <p>Submit a link to at least one photo to publish your spot</p>
                     <input
+                        className="full-size"
                         value={previewImage}
                         type='text'
                         placeholder="Preview Image URL"
@@ -191,8 +207,9 @@ const CreateSpot = () => {
                     />
                     <div className="error"> {validationErrors.previewImage && `${validationErrors.previewImage}`}</div>
                 </div>
-                <div>
+                <div className="create-images">
                     <input
+                        className="full-size"
                         value={img1}
                         type='text'
                         placeholder="Image URL"
@@ -200,8 +217,9 @@ const CreateSpot = () => {
                     />
                     <div className="error"> {validationErrors.img1 && `${validationErrors.img1}`}</div>
                 </div>
-                <div>
+                <div className="create-images">
                     <input
+                        className="full-size"
                         value={img2}
                         type='text'
                         placeholder="Image URL"
@@ -209,8 +227,9 @@ const CreateSpot = () => {
                     />
                     <div className="error"> {validationErrors.img2 && `${validationErrors.img2}`}</div>
                 </div>
-                <div>
+                <div className="create-images">
                     <input
+                        className="full-size"
                         value={img3}
                         type='text'
                         placeholder="Image URL"
@@ -218,8 +237,9 @@ const CreateSpot = () => {
                     />
                     <div className="error"> {validationErrors.img3 && `${validationErrors.img3}`}</div>
                 </div>
-                <div>
+                <div className="create-images">
                     <input
+                        className="full-size"
                         value={img4}
                         type='text'
                         placeholder="Image URL"
@@ -227,8 +247,8 @@ const CreateSpot = () => {
                     />
                     <div className="error"> {validationErrors.img4 && `${validationErrors.img4}`}</div>
                 </div>
-
-                <button type="submit">Create Spot</button>
+                <hr />
+                <button id="create-submit" type="submit">Create Spot</button>
             </form>
         </div>
     )

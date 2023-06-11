@@ -22,9 +22,9 @@ const SpotDetails = () => {
         if (spot.numReviews === 0) {
             return <p><i className="fa-sharp fa-solid fa-star"></i>New</p>
         } else if (spot.numReviews === 1) {
-            return <p><i className="fa-sharp fa-solid fa-star"></i>{spot.avgStarRating} &bull; {spot.numReviews + ' review'}</p>
+            return <p><i className="fa-sharp fa-solid fa-star"></i>{spot.avgStarRating.toFixed(1)} &bull; {spot.numReviews + ' review'}</p>
         } else {
-            return <p><i className="fa-sharp fa-solid fa-star"></i>{spot.avgStarRating} &bull; {spot.numReviews + ' reviews'}</p>
+            return <p><i className="fa-sharp fa-solid fa-star"></i>{spot.avgStarRating.toFixed(1)} &bull; {spot.numReviews + ' reviews'}</p>
         }
     }
 
@@ -35,40 +35,41 @@ const SpotDetails = () => {
     const { SpotImages } = spot
 
     return (
-        spot && <>
+        spot && <div className="spot-details-container">
             <div>
                 <h2>{spot.name}</h2>
                 <p>Location: {spot.city}, {spot.state}, {spot.country}</p>
                 <div className="images">
-                    {SpotImages && <img key={SpotImages[0].url} src={SpotImages[0].url} alt='PreviewImage' />}
+                    {SpotImages && <img className="preview" key={SpotImages[0].url} src={SpotImages[0].url} alt='PreviewImage' />}
                     <div className="right-side-images">
-                        {SpotImages[1] && <img key={SpotImages[1].url} src={SpotImages[1].url} alt={SpotImages[1].url} />}
-                        {SpotImages[2] && <img key={SpotImages[2].url} src={SpotImages[2].url} alt={SpotImages[2].url} />}
-                        {SpotImages[3] && <img key={SpotImages[3].url} src={SpotImages[3].url} alt={SpotImages[3].url} />}
-                        {SpotImages[4] && <img key={SpotImages[0].url} src={SpotImages[4].url} alt={SpotImages[4].url} />}
+                        {SpotImages[1] && <img className="right-side-image" key={SpotImages[1].url} src={SpotImages[1].url} alt={SpotImages[1].url} />}
+                        {SpotImages[2] && <img className="right-side-image" key={SpotImages[2].url} src={SpotImages[2].url} alt={SpotImages[2].url} />}
+                        {SpotImages[3] && <img className="right-side-image" key={SpotImages[3].url} src={SpotImages[3].url} alt={SpotImages[3].url} />}
+                        {SpotImages[4] && <img className="right-side-image" key={SpotImages[0].url} src={SpotImages[4].url} alt={SpotImages[4].url} />}
                     </div>
                 </div>
             </div>
-            <div>
-                <p>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</p>
-                <p>{spot.description}</p>
-            </div>
-            <div>
-                <div>
-                    <p>${spot.price} night</p>
-                    {reviewsDisplay()}
+            <div className="info-container">
+                <div className="name-description">
+                    <p id="name">Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</p>
+                    <p>{spot.description}</p>
                 </div>
-                <button onClick={reserveSpot}>Reserve</button>
+                <div id="reserve-box">
+                    <div id="price-review">
+                        <p id='price'><span>${spot.price}</span> night</p>
+                        <span id='review'>{reviewsDisplay()}</span>
+                    </div>
+                    <button id='reserve-btn' onClick={reserveSpot}>Reserve</button>
+                </div>
             </div>
             <hr />
             <div>
                 {reviewsDisplay()}
-                <button>Post Your Review</button>
             </div>
             <div>
                 <SpotReviews spot={spot} />
             </div>
-        </>
+        </div>
     )
 }
 

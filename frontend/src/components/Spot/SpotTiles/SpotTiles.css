@@ -1,5 +1,7 @@
-.spot-tiles{
+.spot-tiles {
     display: flex;
-    justify-content: space-evenly;
-    flex-wrap:wrap;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
 }

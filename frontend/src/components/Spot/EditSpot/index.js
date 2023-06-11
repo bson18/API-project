@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory, useParams } from "react-router-dom"
 import { thunkFetchSingleSpot, thunkUpdateSpot } from "../../../store/spots"
+import './EditSpot.css'
 
 const EditSpot = () => {
     const { spotId } = useParams()
@@ -83,7 +84,7 @@ const EditSpot = () => {
                     <h3>Where's your place located?</h3>
                     <p>Guests will only get your exact address once they booked a reservation</p>
                 </div>
-                <div>
+                <div className="country">
                     <span><label>Country</label></span><span className="error"> {validationErrors.country && `${validationErrors.country}`}</span>
                     <div>
                         <input
@@ -94,7 +95,7 @@ const EditSpot = () => {
                         />
                     </div>
                 </div>
-                <div>
+                <div className="address">
                     <span><label>Street Address</label></span><span className="error"> {validationErrors.address && `${validationErrors.address}`}</span>
                     <div>
                         <input
@@ -105,19 +106,19 @@ const EditSpot = () => {
                         />
                     </div>
                 </div>
-                <div>
-                    <span><label>City</label></span><span className="error"> {validationErrors.city && `${validationErrors.city}`}</span>
-                    <div>
+                <div className="city-state">
+                    <div className="city">
+                        <span><label>City</label></span><span className="error"> {validationErrors.city && `${validationErrors.city}`}</span>
                         <input
+                            className="space-comma"
                             value={city}
                             type='text'
                             placeholder="City"
                             onChange={e => setCity(e.target.value)}
-                        />
+                        /> {' , '}
                     </div>
-                    {' , '}
-                    <span><label>State</label></span><span className="error"> {validationErrors.state && `${validationErrors.state}`}</span>
-                    <div>
+                    <div className="state">
+                        <span><label>State</label></span><span className="error"> {validationErrors.state && `${validationErrors.state}`}</span>
                         <input
                             value={state}
                             type='text'
@@ -126,27 +127,32 @@ const EditSpot = () => {
                         />
                     </div>
                 </div>
-                <div>
-                    <span><label>Latitude</label></span><span className="error"> {validationErrors.lat && `${validationErrors.lat}`}</span>
-                    <input
-                        value={lat}
-                        type='text'
-                        placeholder="Latitude"
-                        onChange={e => setLat(e.target.value)}
-                    />
-                    {' , '}
-                    <span><label>Longitude</label></span><span className="error"> {validationErrors.lng && `${validationErrors.lng}`}</span>
-                    <input
-                        value={lng}
-                        type='text'
-                        placeholder="Longitude"
-                        onChange={e => setLng(e.target.value)}
-                    />
+                <div className="lat-lng">
+                    <div className="lat">
+                        <span><label>Latitude</label></span><span className="error"> {validationErrors.lat && `${validationErrors.lat}`}</span>
+                        <input
+                            className="space-comma"
+                            value={lat}
+                            type='text'
+                            placeholder="Latitude"
+                            onChange={e => setLat(e.target.value)}
+                        />
+                        {' , '}
+                    </div>
+                    <div className="lng">
+                        <span><label>Longitude</label></span><span className="error"> {validationErrors.lng && `${validationErrors.lng}`}</span>
+                        <input
+                            value={lng}
+                            type='text'
+                            placeholder="Longitude"
+                            onChange={e => setLng(e.target.value)}
+                        />
+                    </div>
                 </div>
-
-                <h3>Describe your place to guests</h3>
-                <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
-                <div>
+                <hr />
+                <div className="description">
+                    <h3>Describe your place to guests</h3>
+                    <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
                     <textarea
                         value={description}
                         type='text'
@@ -155,10 +161,10 @@ const EditSpot = () => {
                     />
                     <div className="error"> {validationErrors.description && `${validationErrors.description}`}</div>
                 </div>
-
-                <h3>Create a title for your spot</h3>
-                <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
-                <div>
+                <hr />
+                <div className="title">
+                    <h3>Create a title for your spot</h3>
+                    <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
                     <input
                         value={name}
                         type='text'
@@ -167,11 +173,12 @@ const EditSpot = () => {
                     />
                     <div className="error"> {validationErrors.name && `${validationErrors.name}`}</div>
                 </div>
-
-                <h3>Set a base price for your spot</h3>
-                <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
-                <div>
+                <hr />
+                <div className="price">
+                    <h3>Set a base price for your spot</h3>
+                    <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
                     {" $ "}<input
+                        className="price-size"
                         value={price}
                         type='text'
                         placeholder="Price per night (USD)"
@@ -179,7 +186,8 @@ const EditSpot = () => {
                     />
                     <div className="error"> {validationErrors.price && `${validationErrors.price}`}</div>
                 </div>
-                <button type="submit">Update your Spot</button>
+                <hr />
+                <button className="update-submit" type="submit">Update your Spot</button>
             </form>
         </div>
     )

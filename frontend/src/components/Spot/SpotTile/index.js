@@ -7,11 +7,11 @@ const SpotTile = ({ spot }) => {
     const onClick = () => {
         history.push(`/spots/${spot.id}`)
     }
-    const rating = spot.avgRating || 'New'
+    const rating = parseFloat(spot.avgRating).toFixed(1) || 'New'
 
     const img = (spot.previewImage === 'There is no preview image') ?
-        <div style={{ width: 250, height: 250, border: 'solid black 1px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}></div>
-        : <img src={spot.previewImage} alt="Spot Preview" />
+        <div></div>
+        : <img src={spot.previewImage} alt="Spot Preview" className="spot-image" />
 
 
     return (
@@ -22,7 +22,7 @@ const SpotTile = ({ spot }) => {
                     <p>{spot.city}, {spot.state}</p>
                     <p><i className="fa-sharp fa-solid fa-star"></i>{rating}</p>
                 </div>
-                <p>${spot.price} night</p>
+                <p className="price"><span>${spot.price}</span> night</p>
             </div>
         </>
     )

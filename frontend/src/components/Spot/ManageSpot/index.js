@@ -28,7 +28,7 @@ const ManageSpot = () => {
             <>
                 <div>
                     <h2>Manage Your Spots</h2>
-                    <button onClick={e => history.push('/spots/new')}>Create a New Spot</button>
+                    <button className="manage-page-btn" onClick={e => history.push('/spots/new')}>Create a New Spot</button>
                 </div>
             </>
         )
@@ -38,7 +38,7 @@ const ManageSpot = () => {
         <>
             <div>
                 <h2>Manage Your Spots</h2>
-                <button onClick={() => history.push('/spots/new')}>Create a New Spot</button>
+                <button className="manage-page-btn" onClick={() => history.push('/spots/new')}>Create a New Spot</button>
             </div>
             <div className="spot-tiles">
                 {userSpots.map(spot => (
@@ -50,13 +50,13 @@ const ManageSpot = () => {
                             <p>{spot.city}, {spot.state}</p>
                             <p><i className="fa-sharp fa-solid fa-star"></i>{spot.avgRating || 'New'}</p>
                         </div>
-                        <p>${spot.price} night</p>
+                        <p className="price"><span>${spot.price}</span> night</p>
                         <div>
-                            <button onClick={e => {
+                            <button className="manage-page-btn" onClick={e => {
                                 e.stopPropagation()
                                 history.push(`/spots/${spot.id}/edit`)
                             }}>Update</button> {' '}
-                            <button onClick={e => e.stopPropagation()}>
+                            <button className="manage-page-btn" onClick={e => e.stopPropagation()}>
                                 <OpenModalMenuItem
                                     modalComponent={<DeleteSpotModal spotId={spot.id} />}
                                     itemText='Delete'

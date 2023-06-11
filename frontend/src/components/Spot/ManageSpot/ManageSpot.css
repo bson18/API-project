@@ -1,5 +1,12 @@
 .spot-tiles {
     display: flex;
-    justify-content: space-evenly;
-    flex-wrap:wrap;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 13px;
+}
+
+.manage-page-btn {
+    background-color: rgb(105, 105, 105);
+    color: white;
+    box-shadow: 2px 2px black;
 }

@@ -1,0 +1,74 @@
+.spot-details-container {
+    max-width: 1000px;
+    margin: auto;
+}
+.images {
+    display: flex;
+    height: 500px;
+    gap: 0.5rem;
+    }
+
+.preview {
+    height: 100%;
+    width: 50%;
+}
+
+.right-side-images {
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    justify-content: space-between;
+}
+
+.right-side-image {
+    height: 49%;
+    width: 49%;
+}
+
+.info-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+#name {
+    font-size:large;
+    font-weight: bold;
+}
+
+#reserve-box {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 30%;
+    height: fit-content;
+}
+
+#price-review {
+    display: flex;
+    justify-content: space-between;
+}
+
+#price {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-left: 1rem;
+}
+
+#review {
+    padding-right: 1rem;
+}
+
+#reserve-btn {
+    width: 90%;
+    height: 2rem;
+    margin-left: 5%;
+    margin-bottom: 5%;
+    background-color: #FF5A5F;
+    box-shadow: 2px 2px black;
+    color: white;
+}
+
+.name-description {
+    width: 60%
+}
