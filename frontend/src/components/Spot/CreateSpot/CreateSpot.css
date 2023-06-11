@@ -1,5 +1,74 @@
-/* .form-container {
-    display: flex;
-    flex-direction: column;
+.form-container {
+    max-width: 50%;
+    margin: auto;
+}
 
-} */
+#create-submit {
+    width: fit-content;
+    margin: auto;
+    background-color: #FF5A5F;
+    color: white;
+    box-shadow: 2px 2px black;
+}
+
+.create-images {
+    padding-bottom: 1rem;
+}
+
+.error {
+    color: red;
+}
+
+.full-size {
+    width: 100%;
+}
+
+.price-size {
+    width: 95%;
+}
+
+input, textarea {
+    background-color: #E8F0FE;
+    width: 100%
+}
+
+.city-state {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.city {
+    width: 65%;
+}
+
+.state {
+    width: 35%
+}
+
+.space-comma {
+    width: 90%
+}
+
+.lat-lng {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.lat {
+    width: 52%;
+}
+.lng {
+    width: 48%;
+}
+
+.country {
+    margin-bottom: 1rem;
+}
+
+.address {
+    margin-bottom: 1rem;
+}
+
+textarea {
+    height: 5rem;
+}

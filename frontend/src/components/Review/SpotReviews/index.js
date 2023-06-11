@@ -4,20 +4,21 @@ import { thunkGetSpotReviews } from "../../../store/reviews"
 import OpenModalMenuItem from "../../Navigation/OpenModalMenuItem"
 import CreateReviewModal from "../CreateReviewModal"
 import DeleteReviewModal from "../DeleteReviewModal"
+import './SpotReviews.css'
 
 const SpotReviews = ({ spot }) => {
     const dispatch = useDispatch()
-    const reviews = useSelector(state => state.reviews)
+    const reviews = useSelector(state => state.reviews.allReviews)
     const user = useSelector(state => state.session.user)
 
     useEffect(() => {
         dispatch(thunkGetSpotReviews(spot.id))
     }, [dispatch, spot.id])
 
-    if (!reviews || !reviews.reviews || !reviews.reviews.Reviews) return null
+    if (!reviews || !reviews.Reviews) return null
     // console.log('1', reviews)
     // console.log('2', reviews.reviews)
-    // console.log('3', reviews.reviews.Reviews[0].User.firstName)
+    // console.log('3', reviews.Reviews[0].User.firstName)
     // console.log('5', Reviews[0].User.firstName)
 
     const months = {
@@ -35,11 +36,10 @@ const SpotReviews = ({ spot }) => {
         '12': 'December',
     }
 
-
-    if (spot.numReviews === 0 && user && user.id !== spot.OwnerId) {
+    if (spot.numReviews === 0 && user && user.id !== spot.ownerId) {
         return <p>Be the first to post a review!</p>
     }
-    const { reviews: { Reviews } } = reviews
+    // const { reviews: { Reviews } } = reviews
     // console.log('4', Reviews)
 
     // const userCheck = () => {
@@ -56,8 +56,8 @@ const SpotReviews = ({ spot }) => {
     return (
         <>
             <div>
-                {(user && user.id !== spot.ownerId && (!Reviews.find(review => user.id === review.userId))
-                    && <button>
+                {(user && user.id !== spot.ownerId && !Object.values(reviews.Reviews).find(review => user.id === review.userId)
+                    && <button className="post-review-btn">
                         <OpenModalMenuItem
                             modalComponent={<CreateReviewModal spot={spot} user={user} />}
                             itemText='Post Your Review'
@@ -65,13 +65,13 @@ const SpotReviews = ({ spot }) => {
                     </button>)
                 }
             </div>
-            {Reviews.reverse().map(review => (
+            {Object.values(reviews.Reviews).reverse().map(review => (
                 <div key={review.id}>
-                    <h3>{review.User.firstName}</h3>
-                    <h4>{months[review.createdAt.split('-')[1]]} {review.createdAt.split('-')[0]}</h4>
-                    <p>{review.review}</p>
+                    <h3 className="name">{review.User.firstName}</h3>
+                    <h4 className="date">{months[review.createdAt.split('-')[1]]} {review.createdAt.split('-')[0]}</h4>
+                    <p className="review">{review.review}</p>
                     {(user && user.id === review.userId
-                        && <button>
+                        && <button className="delete-review-btn">
                             <OpenModalMenuItem
                                 modalComponent={<DeleteReviewModal spot={spot} review={review} />}
                                 itemText='Delete'

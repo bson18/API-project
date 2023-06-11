@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux"
 // import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 import { useModal } from "../../../context/Modal"
 import { thunkDeleteSpot } from "../../../store/spots"
+import './DeleteSpotModal.css'
 
 const DeleteSpotModal = ({ spotId }) => {
     const dispatch = useDispatch()
@@ -15,14 +16,14 @@ const DeleteSpotModal = ({ spotId }) => {
     }
 
     return (
-        <>
-            <h2>Confirm Delete</h2>
+        <div className="confirm-modal">
+            <h2 className="delete-head">Confirm Delete</h2>
             <p>Are you sure you want to remove this spot?</p>
-            <div>
-                <button onClick={onClick}>Yes (Delete Spot)</button>
-                <button onClick={closeModal}>No (Keep Spot)</button>
+            <div className="button-container">
+                <button className="confirm-button" onClick={onClick}>Yes (Delete Spot)</button>
+                <button className="reject-button" onClick={closeModal}>No (Keep Spot)</button>
             </div>
-        </>
+        </div>
     )
 }
 

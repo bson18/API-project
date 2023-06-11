@@ -4,6 +4,7 @@ import { useModal } from "../../../context/Modal"
 import { thunkCreateReview, thunkGetSpotReviews } from "../../../store/reviews"
 import StarRating from "./StarRating"
 import './CreateReviewModal.css'
+import { thunkFetchSingleSpot } from "../../../store/spots"
 
 const CreateReviewModal = ({ spot, user }) => {
     const dispatch = useDispatch()
@@ -35,7 +36,8 @@ const CreateReviewModal = ({ spot, user }) => {
             return
         } else {
             dispatch(thunkGetSpotReviews(spot.id))
-            closeModal()
+                .then(dispatch(thunkFetchSingleSpot(spot.id)))
+                .then(closeModal())
         }
     }
 
@@ -46,11 +48,12 @@ const CreateReviewModal = ({ spot, user }) => {
     return (
         <>
             <div className="modal-create-review">
-                <h2>How was your stay?</h2>
+                <h2 id='head'>How was your stay?</h2>
                 <div className="error"> {hasSubmitted && validationErrors.review && `${validationErrors.review}`}</div>
                 <div className="error"> {hasSubmitted && validationErrors.stars && `${validationErrors.stars}`}</div>
                 <div className="error"> {hasSubmitted && validationErrors.message && `${validationErrors.message}`}</div>
                 <textarea
+                    id="review-text"
                     value={review}
                     type='text'
                     placeholder="Just a quick review."

@@ -1,0 +1,33 @@
+form > p {
+    color: red;
+    margin: 5px auto;
+}
+
+#sign-up-disabled, #sign-up-active {
+    width: 365px;
+    height: 2rem;
+    margin: 10px 1rem;
+}
+
+#sign-up-disabled {
+    background-color: white;
+    color: #ccc;
+    box-shadow: 2px 2px #ccc;
+}
+
+#sign-up-active {
+    background-color: #FF5A5F;
+    color: white;
+    box-shadow: 2px 2px black;
+}
+
+.signup-form {
+    width: 400px;
+    align-items: center;
+}
+
+.signup-input {
+    width: 350px;
+    padding: 10px;
+    margin: 5px;
+}

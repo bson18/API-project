@@ -1,0 +1,14 @@
+.name {
+    margin-bottom: 5px
+}
+
+.date {
+    margin-top: 7px;
+    margin-bottom: 10px;
+}
+
+.post-review-btn, .delete-review-btn {
+    background-color: rgb(105, 105, 105);
+    color: white;
+    box-shadow: 2px 2px black;
+}

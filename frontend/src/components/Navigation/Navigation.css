@@ -4,11 +4,44 @@
     justify-content: space-between;
     align-items: center;
     list-style: none;
+    padding: 1rem 20px;
+    border-bottom: 2px solid lightgray;
+}
+
+#logo {
+    height: 2rem;
+    width: 6rem;
 }
 
 .profile-menu{
     display: flex;
     justify-content:right;
+}
+
+.profile-dropdown {
+    padding: 1rem;
+    position: absolute;
+    right: 1.8rem;
+    top: 2.9rem;
+    background-color: white;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+hr {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.logout-btn {
+    border-radius: 16px;
+    border: 1px solid black;
+    padding: 5px 20px;
+    background-color: rgb(105, 105, 105);
+    color: white;
 }
 
 .hidden {
@@ -21,4 +54,33 @@ button {
 
 li {
     list-style: none;
+}
+
+#create-spot-link {
+    margin-right: 1rem;
+}
+
+.fa-bars {
+    margin-right: 5px
+}
+
+#nav-button {
+    border-radius: 16px;
+    width: 4rem;
+    height: 2rem;
+    border: 1px solid grey;
+    background-color: white;
+}
+
+.profile-link {
+    cursor: pointer
+}
+
+.create-link {
+    text-decoration: none;
+    margin: auto
+}
+
+a {
+    text-decoration: none;
 }

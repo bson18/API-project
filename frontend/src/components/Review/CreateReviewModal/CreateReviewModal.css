@@ -11,9 +11,34 @@
 }
 
 #submit-button-disabled {
-    background-color: #ccc,
+    background-color: white;
+    color: #ccc;
+    box-shadow: 2px 2px #ccc;
 }
 
 #submit-button-active {
-    background-color: red
+    background-color: #FF5A5F;
+    color: white;
+    box-shadow: 2px 2px black;
+}
+
+#submit-button-disabled, #submit-button-active {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 90%;
+    height: 3rem;
+}
+
+.modal-create-review {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#review-text {
+    width: 90%;
+    border-radius: 10px;
+    margin: auto;
+    margin-bottom: 1rem;
 }

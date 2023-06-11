@@ -1,13 +1,23 @@
-img{
-    width: 250px;
-    height: 250px;
- }
+img {
+    width: 15rem;
+    height: 15rem;
+}
 
  .location-rating{
      display:flex;
      justify-content: space-between;
+
  }
 
  .spot-tile{
      cursor: pointer;
+ }
+
+ .price {
+    margin-top: 0;
+ }
+
+ p > span {
+    font-size: large;
+    font-weight: bold;
  }

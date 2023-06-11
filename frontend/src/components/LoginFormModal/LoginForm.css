@@ -1,0 +1,44 @@
+#modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+#username, #password {
+    font-size: 16px;
+    padding-left: 10px;
+    height: 45px;
+    width: 350px;
+    margin: 5px 1rem;
+    background-color: #E8F0FE;
+    border-radius: 5px;
+}
+
+#login-disabled, #login-active, #demo {
+    width: 365px;
+    height: 2rem;
+    margin: 5px 1rem;
+}
+
+#login-disabled {
+    background-color: white;
+    color: lightgray;
+    box-shadow: 2px 2px lightgray;
+}
+
+#login-active {
+    background-color: #FF5A5F;
+    box-shadow: 2px 2px black;
+    color: white;
+}
+
+#errors {
+    margin-left: 1rem;
+    color: red;
+}

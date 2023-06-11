@@ -33,7 +33,7 @@ export const actionDeleteReview = (reviewId) => {
 /*-----THUNKS-----*/
 
 //get reviews
-export const thunkGetSpotReviews = (spotId) => async dispatch => {
+export const thunkGetSpotReviews = (spotId) => async (dispatch, getState) => {
     const res = await csrfFetch(`/api/spots/${spotId}/reviews`)
 
     if (res.ok) {
@@ -75,22 +75,27 @@ export const thunkDeleteReview = (reviewId) => async dispatch => {
 
 /*-----REDUCER-----*/
 
-const initialState = {}
+const initialState = {
+    allReviews: {},
+    spot: {},
+    user: {},
+    bookings: {}
+}
 
 export default function reviewsReducer(state = initialState, action) {
     let newState
     switch (action.type) {
         case GET_SPOT_REVIEWS: {
-            newState = { ...state, reviews: action.reviews }
+            newState = { ...state, allReviews: action.reviews }
             return newState
         }
         case CREATE_REVIEW: {
-            newState = { ...state, [action.review.id]: action.review }
+            newState = { ...state, allReviews: { ...state.allReviews, [action.review.id]: action.review } }
             return newState
         }
         case DELETE_REVIEW: {
-            newState = { ...state }
-            delete newState[action.reviewId]
+            newState = { ...state, allReviews: { ...state.allReviews } }
+            delete newState.allReviews[action.reviewId]
             return newState
         }
 
