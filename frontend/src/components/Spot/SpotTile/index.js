@@ -7,7 +7,8 @@ const SpotTile = ({ spot }) => {
     const onClick = () => {
         history.push(`/spots/${spot.id}`)
     }
-    const rating = parseFloat(spot.avgRating).toFixed(1) || 'New'
+
+    const rating = spot.avgRating ? parseFloat(spot.avgRating).toFixed(1) : 'New'
 
     const img = (spot.previewImage === 'There is no preview image') ?
         <div></div>
