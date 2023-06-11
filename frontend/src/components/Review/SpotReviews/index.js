@@ -35,9 +35,9 @@ const SpotReviews = ({ spot }) => {
         '11': 'November',
         '12': 'December',
     }
-
+    let firstReview
     if (spot.numReviews === 0 && user && user.id !== spot.ownerId) {
-        return <p>Be the first to post a review!</p>
+        firstReview = <p>Be the first to post a review!</p>
     }
     // const { reviews: { Reviews } } = reviews
     // console.log('4', Reviews)
@@ -56,6 +56,7 @@ const SpotReviews = ({ spot }) => {
     return (
         <>
             <div>
+                {firstReview}
                 {(user && user.id !== spot.ownerId && !Object.values(reviews.Reviews).find(review => user.id === review.userId)
                     && <button className="post-review-btn">
                         <OpenModalMenuItem

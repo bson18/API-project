@@ -2,7 +2,7 @@
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 13px;
+    gap: 10px;
 }
 
 .manage-page-btn {
