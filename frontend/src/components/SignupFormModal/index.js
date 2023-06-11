@@ -22,7 +22,7 @@ function SignupFormModal() {
         const errorsObj = {}
 
         if (!email) errorsObj.email = 'Email is required'
-        if (!username) errorsObj.username = 'Username is required'
+        if (!username || username.length < 4) errorsObj.username = 'Username is required'
         if (!firstName) errorsObj.firstName = 'First name is required'
         if (!lastName) errorsObj.lastName = 'Last name is required'
         if (!password) errorsObj.password = 'Password is required'
@@ -63,13 +63,13 @@ function SignupFormModal() {
         <>
             <h1>Sign Up</h1>
             <form className="signup-form" onSubmit={handleSubmit}>
-                {submitted && errors.email && <p>{errors.email}</p>}
-                {submitted && errors.username && <p>{errors.username}</p>}
-                {submitted && errors.firstName && <p>{errors.firstName}</p>}
-                {submitted && errors.lastName && <p>{errors.lastName}</p>}
-                {submitted && errors.password && <p>{errors.password}</p>}
+                {submitted && errors.email && <p className="error">{errors.email}</p>}
+                {submitted && errors.username && <p className="error">{errors.username}</p>}
+                {submitted && errors.firstName && <p className="error">{errors.firstName}</p>}
+                {submitted && errors.lastName && <p className="error">{errors.lastName}</p>}
+                {submitted && errors.password && <p className="error">{errors.password}</p>}
                 {submitted && errors.confirmPassword && (
-                    <p>{errors.confirmPassword}</p>)}
+                    <p className="error">{errors.confirmPassword}</p>)}
                 <label>
                     <input
                         className="signup-input"

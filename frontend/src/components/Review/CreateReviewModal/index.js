@@ -56,7 +56,7 @@ const CreateReviewModal = ({ spot, user }) => {
                     id="review-text"
                     value={review}
                     type='text'
-                    placeholder="Just a quick review."
+                    placeholder="Leave your review here..."
                     onChange={e => setReview(e.target.value)}
                 />
                 <div className="star-rating">
@@ -64,7 +64,7 @@ const CreateReviewModal = ({ spot, user }) => {
                         stars={stars}
                         disabled={false}
                         onChange={onChange}
-                    />
+                    />{'Stars'}
                 </div>
                 <button
                     onClick={onSubmit}

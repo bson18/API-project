@@ -163,7 +163,7 @@ const CreateSpot = () => {
                         className="full-size"
                         value={description}
                         type='text'
-                        placeholder="Description"
+                        placeholder="Please write at least 30 characters"
                         onChange={e => setDescription(e.target.value)}
                     />
                     <div className="error"> {validationErrors.description && `${validationErrors.description}`}</div>
@@ -188,7 +188,7 @@ const CreateSpot = () => {
                     {" $ "}<input
                         className="price-size"
                         value={price}
-                        type='text'
+                        type='number'
                         placeholder="Price per night (USD)"
                         onChange={e => setPrice(e.target.value)}
                     />
