@@ -1,5 +1,13 @@
 # AirBnB
 
+![project-home](./frontend/src/assets/project-home.png)
+
+This is a clone project of AirBnB that has some of the key functionalities of the actual website. The features of this clone include full CRUD functionality of spots as well as create, read, and delete functionality of reviews.
+
+## Technologies Used
+* Backend - Express, PostgressQL
+* Frontend - React, Redux, CSS
+
 ## Database Schema Design
 
 ![airbnb-database-schema]
